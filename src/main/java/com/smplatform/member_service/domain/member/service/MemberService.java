@@ -20,10 +20,10 @@ public interface MemberService {
     /**
      * Update
      */
-
+    MemberDto updateMember(MemberDto updatedMember);
 
     /**
      * Delete
      */
-
+    Void deleteMember(Long id);
 }
