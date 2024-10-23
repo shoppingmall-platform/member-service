@@ -1,6 +1,6 @@
-package com.smplatform.member_service.member.controller;
+package com.smplatform.member_service.domain.member.controller;
 
-import com.smplatform.member_service.member.dto.MemberDto;
+import com.smplatform.member_service.domain.member.dto.MemberDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

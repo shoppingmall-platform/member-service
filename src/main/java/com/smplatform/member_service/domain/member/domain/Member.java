@@ -1,4 +1,4 @@
-package com.smplatform.member_service.member.domain;
+package com.smplatform.member_service.domain.member.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
-package com.smplatform.member_service.member.service;
+package com.smplatform.member_service.domain.member.service;
 
-import com.smplatform.member_service.member.dto.MemberDto;
+import com.smplatform.member_service.domain.member.dto.MemberDto;
 
 import java.util.List;
 
