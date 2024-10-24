@@ -1,29 +1,26 @@
 package com.smplatform.member_service.domain.member.dto;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
 @AllArgsConstructor
-public class MemberDto {
+public class MemberCreationDto {
     private Long memberId;
     private String name;
     private String email;
-    // password 제외
-    private String birthday;
+    private String password;
+    private LocalDate birthday;
     private String phoneNumber;
     private String gender;
-    private String status;
-    private String authority;
     private String level;
     private String region;
-    private String tosAgreement;
-    private String privacyAgreement;
-    private String marketingAgreement;
-    private String createAt;
-    private String updateAt;
-
+    private Boolean tosAgreement;
+    private Boolean privacyAgreement;
+    private Boolean marketingAgreement;
 }
