@@ -2,10 +2,15 @@ package com.smplatform.member_service.domain.member.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder
 @Table(name = "members")
 @AllArgsConstructor
 public class Member {
@@ -24,7 +29,7 @@ public class Member {
     private String password;
 
     @Column(name = "birthday")
-    private String birthday;
+    private LocalDate birthday;
 
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -45,18 +50,18 @@ public class Member {
     private String region;
 
     @Column(name = "tos_agreement")
-    private String tosAgreement;
+    private Boolean tosAgreement;
 
     @Column(name = "privacy_agreement")
-    private String privacyAgreement;
+    private Boolean privacyAgreement;
 
     @Column(name = "marketing_agreement")
-    private String marketingAgreement;
+    private Boolean marketingAgreement;
 
     @Column(name = "create_at")
-    private String createAt;
+    private LocalDateTime createAt;
 
     @Column(name = "update_at")
-    private String updateAt;
+    private LocalDateTime updateAt;
 
 }
