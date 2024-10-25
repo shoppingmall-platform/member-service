@@ -18,7 +18,8 @@ public interface MemberService {
      * Read
      */
     MemberResponseDto getMember(Long id);
-    List<MemberResponseDto> getMembers(MemberSearchRequestParamDto searchRequestParamDto);
+    List<MemberResponseDto> getMembers();
+    List<MemberResponseDto> searchMembers(MemberSearchRequestParamDto searchRequestParamDto);
 
     /**
      * Update

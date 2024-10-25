@@ -35,10 +35,16 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.getMember(memberId));
     }
 
+    @GetMapping
+    @Operation(summary = "member 리스트 조회", description = "모든 사용자 정보 조회")
+    public ResponseEntity<List<MemberResponseDto>> getMembers() {
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.getMembers());
+    }
+
     @PostMapping("/search")
-    @Operation(summary = "member 리스트 조회", description = "쿼리파라미터를 이용한 사용자 정보 리스트 조회")
-    public ResponseEntity<List<MemberResponseDto>> getMembers(@RequestBody MemberSearchRequestParamDto searchParam) {
-        return ResponseEntity.status(HttpStatus.OK).body(memberService.getMembers(searchParam));
+    @Operation(summary = "member 검색", description = "검색파라미터를 이용한 사용자 정보 리스트 조회")
+    public ResponseEntity<List<MemberResponseDto>> searchMembers(@RequestBody MemberSearchRequestParamDto searchParam) {
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.searchMembers(searchParam));
     }
 
     @PutMapping("/{memberId}")

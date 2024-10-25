@@ -68,7 +68,29 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<MemberResponseDto> getMembers(MemberSearchRequestParamDto searchRequestParamDto) {
+    public List<MemberResponseDto> getMembers() {
+        List<Member> members = memberRepository.findAll();
+
+        return members.stream()
+                .map(m -> MemberResponseDto.builder()
+                        .memberId(m.getMemberId())
+                        .name(m.getName())
+                        .email(m.getEmail())
+                        .birthday(m.getBirthday())
+                        .phoneNumber(m.getPhoneNumber())
+                        .gender(m.getGender())
+                        .status(m.getStatus())
+                        .level(m.getLevel())
+                        .region(m.getRegion())
+                        .createAt(m.getCreateAt())
+                        .build()
+                )
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<MemberResponseDto> searchMembers(MemberSearchRequestParamDto searchRequestParamDto) {
         // Query using JPAQueryFactory
         List<Member> members = memberRepository.searchMember(searchRequestParamDto);
 
