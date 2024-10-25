@@ -1,7 +1,7 @@
 package com.smplatform.member_service.domain.member.controller;
 
-import com.smplatform.member_service.domain.member.dto.MemberCreationDto;
-import com.smplatform.member_service.domain.member.dto.MemberRequestDto;
+import com.smplatform.member_service.domain.member.dto.MemberCreateDto;
+import com.smplatform.member_service.domain.member.dto.MemberUpdateDto;
 import com.smplatform.member_service.domain.member.dto.MemberResponseDto;
 import com.smplatform.member_service.domain.member.dto.MemberSearchRequestParamDto;
 import com.smplatform.member_service.domain.member.service.MemberService;
@@ -25,34 +25,34 @@ public class MemberController {
 
     @PostMapping
     @Operation(summary = "member 생성", description = "사용자 정보 생성")
-    public ResponseEntity<Long> createMember(@RequestBody MemberCreationDto newMember) {
+    public ResponseEntity<Long> createMember(@RequestBody MemberCreateDto newMember) {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.createMember(newMember));
     }
 
     @GetMapping("/{memberId}")
     @Operation(summary = "member 조회", description = "해당 아이디의 사용자 정보 조회")
     public ResponseEntity<MemberResponseDto> getMember(@PathVariable("memberId") Long memberId) {
-
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.getMember(memberId));
     }
 
-    @GetMapping
+    @PostMapping("/search")
     @Operation(summary = "member 리스트 조회", description = "쿼리파라미터를 이용한 사용자 정보 리스트 조회")
     public ResponseEntity<List<MemberResponseDto>> getMembers(@RequestBody MemberSearchRequestParamDto searchParam) {
-
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.getMembers(searchParam));
     }
 
     @PutMapping("/{memberId}")
     @Operation(summary = "member 정보 수정", description = "사용자 정보 수정")
     public ResponseEntity<Long> updateMember(
             @PathVariable("memberId") Long memberId,
-            @RequestBody MemberRequestDto updateMember
+            @RequestBody MemberUpdateDto updateMember
     ) {
-
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.updateMember(memberId, updateMember));
     }
 
     @DeleteMapping("/{memberId}")
     @Operation(summary = "member 삭제", description = "사용자 정보 삭제")
     public ResponseEntity<Void> deleteMember(@PathVariable("memberId") Long memberId) {
-
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.deleteMember(memberId));
     }
 }

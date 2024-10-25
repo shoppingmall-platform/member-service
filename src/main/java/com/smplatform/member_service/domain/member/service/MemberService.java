@@ -1,7 +1,7 @@
 package com.smplatform.member_service.domain.member.service;
 
-import com.smplatform.member_service.domain.member.dto.MemberCreationDto;
-import com.smplatform.member_service.domain.member.dto.MemberRequestDto;
+import com.smplatform.member_service.domain.member.dto.MemberCreateDto;
+import com.smplatform.member_service.domain.member.dto.MemberUpdateDto;
 import com.smplatform.member_service.domain.member.dto.MemberResponseDto;
 import com.smplatform.member_service.domain.member.dto.MemberSearchRequestParamDto;
 
@@ -12,18 +12,18 @@ public interface MemberService {
     /**
      * Create
      */
-    Long createMember(MemberCreationDto newMember);
+    Long createMember(MemberCreateDto newMemberDto);
 
     /**
      * Read
      */
     MemberResponseDto getMember(Long id);
-    List<MemberResponseDto> getMembers(MemberSearchRequestParamDto searchParam);
+    List<MemberResponseDto> getMembers(MemberSearchRequestParamDto searchRequestParamDto);
 
     /**
      * Update
      */
-    Long updateMember(MemberRequestDto updatedMember);
+    Long updateMember(Long id, MemberUpdateDto updateMemberDto);
 
     /**
      * Delete

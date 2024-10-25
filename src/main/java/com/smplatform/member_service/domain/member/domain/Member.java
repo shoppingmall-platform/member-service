@@ -1,18 +1,22 @@
 package com.smplatform.member_service.domain.member.domain;
 
+import com.smplatform.member_service.domain.member.dto.MemberUpdateDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 @Getter
 @Builder
 @Table(name = "members")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Member {
     @Id
     @Column(name = "member_id")
@@ -63,5 +67,26 @@ public class Member {
 
     @Column(name = "update_at")
     private LocalDateTime updateAt;
+
+
+    public Member update(MemberUpdateDto memberUpdateDto) {
+        Optional.ofNullable(memberUpdateDto.getName()).ifPresent(name -> this.name = name);
+        Optional.ofNullable(memberUpdateDto.getBirthday()).ifPresent(birthday -> this.birthday = birthday);
+        Optional.ofNullable(memberUpdateDto.getPhoneNumber()).ifPresent(phoneNumber -> this.phoneNumber = phoneNumber);
+        Optional.ofNullable(memberUpdateDto.getGender()).ifPresent(gender -> this.gender = gender);
+        Optional.ofNullable(memberUpdateDto.getStatus()).ifPresent(status -> this.status = status);
+        Optional.ofNullable(memberUpdateDto.getLevel()).ifPresent(level -> this.level = level);
+        Optional.ofNullable(memberUpdateDto.getRegion()).ifPresent(region -> this.region = region);
+        Optional.ofNullable(memberUpdateDto.getTosAgreement()).ifPresent(tosAgreement -> this.tosAgreement = tosAgreement);
+        Optional.ofNullable(memberUpdateDto.getPrivacyAgreement()).ifPresent(privacyAgreement -> this.privacyAgreement = privacyAgreement);
+        Optional.ofNullable(memberUpdateDto.getMarketingAgreement()).ifPresent(marketingAgreement -> this.marketingAgreement = marketingAgreement);
+        this.updateAt = LocalDateTime.now();
+
+        return this;
+    }
+
+    public void delete() {
+        this.status = "탈퇴";
+    }
 
 }

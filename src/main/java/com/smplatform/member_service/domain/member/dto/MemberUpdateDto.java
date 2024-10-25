@@ -5,19 +5,16 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Builder
 @Getter
 @AllArgsConstructor
-public class MemberCreationDto {
-    private Long memberId;
+public class MemberUpdateDto {
     private String name;
-    private String email;
-    private String password;
     private LocalDate birthday;
     private String phoneNumber;
     private String gender;
+    private String status;
     private String level;
     private String region;
     private Boolean tosAgreement;
