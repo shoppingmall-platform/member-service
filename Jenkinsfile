@@ -37,14 +37,13 @@ pipeline {
                         usernamePassword(credentialsId: 'DOCKER_HUB_CREDENTIALS_MK', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')
                     ]) {
                         sh """
-                        # Docker login
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
 
                         # SSH and deployment commands
                         ssh -o StrictHostKeyChecking=no ubuntu@${DEPLOY_SERVER} '
                             cd docker-compose &&
                             git config credential.helper store &&
                             git pull https://${GIT_USER}:${GIT_PASS}@github.com/shoppingmall-platform/docker-compose.git main &&
+                            echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin &&
                             docker pull ${DOCKER_IMAGE} &&
                             docker compose down &&
                             docker compose up -d
