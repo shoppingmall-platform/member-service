@@ -6,18 +6,18 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 
+import com.smplatform.member_service.domain.member.enums.Gender;
+
 @Builder
 @Getter
 @AllArgsConstructor
 public class MemberCreateDto {
-    private Long memberId;
     private String name;
     private String email;
     private String password;
     private LocalDate birthday;
     private String phoneNumber;
-    private String gender;
-    private String level;
+    private Gender gender;
     private String region;
     private Boolean tosAgreement;
     private Boolean privacyAgreement;

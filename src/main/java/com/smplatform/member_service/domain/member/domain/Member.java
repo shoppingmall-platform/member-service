@@ -1,6 +1,12 @@
 package com.smplatform.member_service.domain.member.domain;
 
+import com.smplatform.member_service.domain.member.dto.MemberCreateDto;
 import com.smplatform.member_service.domain.member.dto.MemberUpdateDto;
+import com.smplatform.member_service.domain.member.enums.Gender;
+import com.smplatform.member_service.domain.member.enums.MemberAuthority;
+import com.smplatform.member_service.domain.member.enums.MemberLevel;
+import com.smplatform.member_service.domain.member.enums.MemberStatus;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,16 +45,20 @@ public class Member {
     private String phoneNumber;
 
     @Column(name = "gender")
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private MemberStatus status;
 
     @Column(name = "authority")
-    private String authority;
+    @Enumerated(EnumType.STRING)
+    private MemberAuthority authority;
 
     @Column(name = "level")
-    private String level;
+    @Enumerated(EnumType.STRING)
+    private MemberLevel level;
 
     @Column(name = "region")
     private String region;
@@ -86,7 +96,7 @@ public class Member {
     }
 
     public void delete() {
-        this.status = "탈퇴";
+        this.status = MemberStatus.WITHDRAWN;
     }
 
 }

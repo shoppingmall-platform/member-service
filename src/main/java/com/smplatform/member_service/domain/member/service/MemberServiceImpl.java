@@ -5,6 +5,9 @@ import com.smplatform.member_service.domain.member.domain.Member;
 import com.smplatform.member_service.domain.member.domain.QMember;
 import com.smplatform.member_service.domain.member.dto.MemberCreateDto;
 import com.smplatform.member_service.domain.member.dto.MemberUpdateDto;
+import com.smplatform.member_service.domain.member.enums.MemberAuthority;
+import com.smplatform.member_service.domain.member.enums.MemberLevel;
+import com.smplatform.member_service.domain.member.enums.MemberStatus;
 import com.smplatform.member_service.domain.member.dto.MemberResponseDto;
 import com.smplatform.member_service.domain.member.dto.MemberSearchRequestParamDto;
 import com.smplatform.member_service.domain.member.repository.MemberRepository;
@@ -13,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,15 +37,23 @@ public class MemberServiceImpl implements MemberService{
         // password 해시 처리
 
         // 저장할 멤버 엔티티 생성
-        Member member = Member.builder()
-                .email(memberCreateDto.getEmail())
+        Member newMember = Member.builder()
                 .name(memberCreateDto.getName())
+                .email(memberCreateDto.getEmail())
                 .password(memberCreateDto.getPassword())
-                .createAt(LocalDateTime.now())
-                .updateAt(LocalDateTime.now())
+                .birthday(memberCreateDto.getBirthday())
+                .phoneNumber(memberCreateDto.getPhoneNumber())
+                .gender(memberCreateDto.getGender())
+                .region(memberCreateDto.getRegion())
+                .tosAgreement(memberCreateDto.getTosAgreement())
+                .privacyAgreement(memberCreateDto.getPrivacyAgreement())
+                .marketingAgreement(memberCreateDto.getMarketingAgreement())
+                .status(MemberStatus.ACTIVE)
+                .authority(MemberAuthority.USER)
+                .level(MemberLevel.NEW)
                 .build();
 
-        return memberRepository.save(member).getMemberId();
+        return memberRepository.save(newMember).getMemberId();
     }
 
     @Override
@@ -91,10 +101,11 @@ public class MemberServiceImpl implements MemberService{
     @Override
     @Transactional(readOnly = true)
     public List<MemberResponseDto> searchMembers(MemberSearchRequestParamDto searchRequestParamDto) {
-        // Query using JPAQueryFactory
+        // OrderSearch, OrderDateSearch, ProductId가 null이 아니면 필요 데이터 Rest API 요청
+        
+
         List<Member> members = memberRepository.searchMember(searchRequestParamDto);
 
-        // Convert the result into a list of MemberResponseDto and return
         return members.stream()
                 .map(m -> MemberResponseDto.builder()
                         .memberId(m.getMemberId())
@@ -130,6 +141,7 @@ public class MemberServiceImpl implements MemberService{
                 .orElseThrow(() -> new IllegalArgumentException("Member not found"));
 
         member.delete();
+        memberRepository.save(member);
 
         return null;
     }
