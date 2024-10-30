@@ -1,12 +1,17 @@
 package com.smplatform.member_service.domain.member.repository;
 
-import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.smplatform.member_service.domain.member.domain.Member;
 import com.smplatform.member_service.domain.member.dto.MemberSearchRequestParamDto;
+import com.smplatform.member_service.domain.member.enums.Gender;
+import com.smplatform.member_service.domain.member.enums.MemberLevel;
+import com.smplatform.member_service.domain.member.enums.search.DateSerach;
+
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.time.LocalDate;
 
 import static com.smplatform.member_service.domain.member.domain.QMember.member;
 
@@ -17,39 +22,63 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 
     @Override
     public List<Member> searchMember(MemberSearchRequestParamDto searchRequestParamDto) {
-        BooleanBuilder whereClause = new BooleanBuilder();
-
-        if (searchRequestParamDto.getName() != null) {
-            whereClause.and(member.name.eq(searchRequestParamDto.getName()));
-        }
-        if (searchRequestParamDto.getEmail() != null) {
-            whereClause.and(member.email.eq(searchRequestParamDto.getEmail()));
-        }
-        if (searchRequestParamDto.getBirthday() != null) {
-            whereClause.and(member.birthday.eq(searchRequestParamDto.getBirthday()));
-        }
-        if (searchRequestParamDto.getPhoneNumber() != null) {
-            whereClause.and(member.phoneNumber.eq(searchRequestParamDto.getPhoneNumber()));
-        }
-        if (searchRequestParamDto.getGender() != null) {
-            whereClause.and(member.gender.eq(searchRequestParamDto.getGender()));
-        }
-        if (searchRequestParamDto.getStatus() != null) {
-            whereClause.and(member.status.eq(searchRequestParamDto.getStatus()));
-        }
-        if (searchRequestParamDto.getLevel() != null) {
-            whereClause.and(member.level.eq(searchRequestParamDto.getLevel()));
-        }
-        if (searchRequestParamDto.getRegion() != null) {
-            whereClause.and(member.region.eq(searchRequestParamDto.getRegion()));
-        }
-        if (searchRequestParamDto.getCreateAt() != null) {
-            whereClause.and(member.createAt.eq(searchRequestParamDto.getCreateAt()));
-        }
-
         return queryFactory
                 .selectFrom(member)
-                .where(whereClause)
+                .where(
+                    nameContains(searchRequestParamDto.getName()),
+                    emailContains(searchRequestParamDto.getEmail()),
+                    levelEq(searchRequestParamDto.getLevel()),
+                    dateSearchBetween(searchRequestParamDto.getDateSearch(), searchRequestParamDto.getStartDate(), searchRequestParamDto.getEndDate()),
+                    ageBetween(searchRequestParamDto.getStartAge(), searchRequestParamDto.getEndAge()),
+                    genderEq(searchRequestParamDto.getGender())
+                )
                 .fetch();
     }
+
+    private BooleanExpression nameContains(String name) {
+        return name != null ? member.name.contains(name) : null;
+    }
+
+    private BooleanExpression emailContains(String email) {
+        return email != null ? member.email.contains(email) : null;
+    }
+
+    private BooleanExpression levelEq(MemberLevel level) {
+        return level != null ? member.level.eq(level.name()) : null;
+    }
+
+    private BooleanExpression dateSearchBetween(DateSerach dateSearch, LocalDate startDate, LocalDate endDate) {
+        if (dateSearch == null || startDate == null || endDate == null) {
+            return null;
+        }
+        
+        switch (dateSearch) {
+            case JOIN:
+                return member.createAt.between(
+                    startDate.atTime(0, 0, 0), 
+                    endDate.atTime(23, 59, 59)
+                );
+            case BIRTHDAY:
+                return member.birthday.between(startDate, endDate);
+            default:
+                return null;
+        }
+    }
+
+    private BooleanExpression ageBetween(int startAge, int endAge) {
+        BooleanExpression agePredicate = null;
+        if (startAge != 0) {
+            agePredicate = member.birthday.loe(LocalDate.now().minusYears(startAge));
+        }
+        if (endAge != 0) {
+            BooleanExpression endAgePredicate = member.birthday.goe(LocalDate.now().minusYears(endAge + 1));
+            agePredicate = agePredicate != null ? agePredicate.and(endAgePredicate) : endAgePredicate;
+        }
+        return agePredicate;
+    }
+
+    private BooleanExpression genderEq(Gender gender) {
+        return gender != null ? member.gender.eq(gender.name()) : null;
+    }
+
 }
