@@ -1,8 +1,6 @@
 package com.smplatform.member_service.domain.member.service;
 
-import com.querydsl.core.BooleanBuilder;
-import com.smplatform.member_service.domain.member.domain.Member;
-import com.smplatform.member_service.domain.member.domain.QMember;
+import com.smplatform.member_service.domain.member.entity.Member;
 import com.smplatform.member_service.domain.member.dto.MemberCreateDto;
 import com.smplatform.member_service.domain.member.dto.MemberUpdateDto;
 import com.smplatform.member_service.domain.member.enums.MemberAuthority;

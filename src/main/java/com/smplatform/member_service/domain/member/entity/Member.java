@@ -1,6 +1,5 @@
-package com.smplatform.member_service.domain.member.domain;
+package com.smplatform.member_service.domain.member.entity;
 
-import com.smplatform.member_service.domain.member.dto.MemberCreateDto;
 import com.smplatform.member_service.domain.member.dto.MemberUpdateDto;
 import com.smplatform.member_service.domain.member.enums.Gender;
 import com.smplatform.member_service.domain.member.enums.MemberAuthority;

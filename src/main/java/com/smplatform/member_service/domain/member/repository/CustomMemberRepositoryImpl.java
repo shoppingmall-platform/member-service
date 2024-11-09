@@ -2,7 +2,7 @@ package com.smplatform.member_service.domain.member.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.smplatform.member_service.domain.member.domain.Member;
+import com.smplatform.member_service.domain.member.entity.Member;
 import com.smplatform.member_service.domain.member.dto.MemberSearchRequestParamDto;
 import com.smplatform.member_service.domain.member.enums.Gender;
 import com.smplatform.member_service.domain.member.enums.MemberLevel;
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.time.LocalDate;
 
-import static com.smplatform.member_service.domain.member.domain.QMember.member;
+import static com.smplatform.member_service.domain.member.entity.QMember.member;
 
 @RequiredArgsConstructor
 public class CustomMemberRepositoryImpl implements CustomMemberRepository {
