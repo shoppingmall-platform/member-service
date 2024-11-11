@@ -82,9 +82,9 @@ public class Member {
         Optional.ofNullable(memberUpdateDto.getName()).ifPresent(name -> this.name = name);
         Optional.ofNullable(memberUpdateDto.getBirthday()).ifPresent(birthday -> this.birthday = birthday);
         Optional.ofNullable(memberUpdateDto.getPhoneNumber()).ifPresent(phoneNumber -> this.phoneNumber = phoneNumber);
-        Optional.ofNullable(memberUpdateDto.getGender()).ifPresent(gender -> this.gender = gender);
-        Optional.ofNullable(memberUpdateDto.getStatus()).ifPresent(status -> this.status = status);
-        Optional.ofNullable(memberUpdateDto.getLevel()).ifPresent(level -> this.level = level);
+        Optional.ofNullable(memberUpdateDto.getGender()).ifPresent(gender -> this.gender = Gender.valueOf(gender));
+        Optional.ofNullable(memberUpdateDto.getStatus()).ifPresent(status -> this.status = MemberStatus.valueOf(status));
+        Optional.ofNullable(memberUpdateDto.getLevel()).ifPresent(level -> this.level = MemberLevel.valueOf(level));
         Optional.ofNullable(memberUpdateDto.getRegion()).ifPresent(region -> this.region = region);
         Optional.ofNullable(memberUpdateDto.getTosAgreement()).ifPresent(tosAgreement -> this.tosAgreement = tosAgreement);
         Optional.ofNullable(memberUpdateDto.getPrivacyAgreement()).ifPresent(privacyAgreement -> this.privacyAgreement = privacyAgreement);

@@ -27,10 +27,10 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
                 .where(
                     nameContains(searchRequestParamDto.getName()),
                     emailContains(searchRequestParamDto.getEmail()),
-                    levelEq(searchRequestParamDto.getLevel()),
-                    dateSearchBetween(searchRequestParamDto.getDateSearch(), searchRequestParamDto.getStartDate(), searchRequestParamDto.getEndDate()),
+                    levelEq(MemberLevel.valueOf(searchRequestParamDto.getLevel())),
+                    dateSearchBetween(DateSerach.valueOf(searchRequestParamDto.getDateSearch()), searchRequestParamDto.getStartDate(), searchRequestParamDto.getEndDate()),
                     ageBetween(searchRequestParamDto.getStartAge(), searchRequestParamDto.getEndAge()),
-                    genderEq(searchRequestParamDto.getGender())
+                    genderEq(Gender.valueOf(searchRequestParamDto.getGender()))
                 )
                 .fetch();
     }
@@ -44,7 +44,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
     }
 
     private BooleanExpression levelEq(MemberLevel level) {
-        return level != null ? member.level.eq(level.name()) : null;
+        return level != null ? member.level.eq(MemberLevel.valueOf(level.name())) : null;
     }
 
     private BooleanExpression dateSearchBetween(DateSerach dateSearch, LocalDate startDate, LocalDate endDate) {
@@ -78,7 +78,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
     }
 
     private BooleanExpression genderEq(Gender gender) {
-        return gender != null ? member.gender.eq(gender.name()) : null;
+        return gender != null ? member.gender.eq(Gender.valueOf(gender.name())) : null;
     }
 
 }

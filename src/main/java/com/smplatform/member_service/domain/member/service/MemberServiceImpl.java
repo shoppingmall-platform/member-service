@@ -4,6 +4,7 @@ import com.smplatform.member_service.domain.member.entity.Member;
 import com.smplatform.member_service.domain.member.dto.MemberCreateDto;
 import com.smplatform.member_service.domain.member.dto.MemberUpdateDto;
 import com.smplatform.member_service.domain.member.entity.WithdrawMember;
+import com.smplatform.member_service.domain.member.enums.Gender;
 import com.smplatform.member_service.domain.member.enums.MemberAuthority;
 import com.smplatform.member_service.domain.member.enums.MemberLevel;
 import com.smplatform.member_service.domain.member.enums.MemberStatus;
@@ -13,6 +14,7 @@ import com.smplatform.member_service.domain.member.repository.MemberRepository;
 import com.smplatform.member_service.domain.member.repository.WithdrawMemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MemberServiceImpl implements MemberService{
 
+    private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final WithdrawMemberRepository withdrawMemberRepository;
 
@@ -37,15 +40,16 @@ public class MemberServiceImpl implements MemberService{
         }
 
         // password 해시 처리
+        String hashedPassword = passwordEncoder.encode(memberCreateDto.getPassword());
 
         // 저장할 멤버 엔티티 생성
         Member newMember = Member.builder()
                 .name(memberCreateDto.getName())
                 .email(memberCreateDto.getEmail())
-                .password(memberCreateDto.getPassword())
+                .password(hashedPassword)
                 .birthday(memberCreateDto.getBirthday())
                 .phoneNumber(memberCreateDto.getPhoneNumber())
-                .gender(memberCreateDto.getGender())
+                .gender(Gender.valueOf(memberCreateDto.getGender()))
                 .region(memberCreateDto.getRegion())
                 .tosAgreement(memberCreateDto.getTosAgreement())
                 .privacyAgreement(memberCreateDto.getPrivacyAgreement())
@@ -72,9 +76,9 @@ public class MemberServiceImpl implements MemberService{
                 .email(member.getEmail())
                 .birthday(member.getBirthday())
                 .phoneNumber(member.getPhoneNumber())
-                .gender(member.getGender())
-                .status(member.getStatus())
-                .level(member.getLevel())
+                .gender(String.valueOf(member.getGender()))
+                .status(String.valueOf(member.getStatus()))
+                .level(String.valueOf(member.getLevel()))
                 .region(member.getRegion())
                 .createAt(member.getCreateAt())
                 .build();
@@ -85,21 +89,7 @@ public class MemberServiceImpl implements MemberService{
     public List<MemberResponseDto> getMembers() {
         List<Member> members = memberRepository.findAll();
 
-        return members.stream()
-                .map(m -> MemberResponseDto.builder()
-                        .memberId(m.getMemberId())
-                        .name(m.getName())
-                        .email(m.getEmail())
-                        .birthday(m.getBirthday())
-                        .phoneNumber(m.getPhoneNumber())
-                        .gender(m.getGender())
-                        .status(m.getStatus())
-                        .level(m.getLevel())
-                        .region(m.getRegion())
-                        .createAt(m.getCreateAt())
-                        .build()
-                )
-                .collect(Collectors.toList());
+        return getMemberResponseDtos(members);
     }
 
     @Override
@@ -110,6 +100,10 @@ public class MemberServiceImpl implements MemberService{
 
         List<Member> members = memberRepository.searchMember(searchRequestParamDto);
 
+        return getMemberResponseDtos(members);
+    }
+
+    private List<MemberResponseDto> getMemberResponseDtos(List<Member> members) {
         return members.stream()
                 .map(m -> MemberResponseDto.builder()
                         .memberId(m.getMemberId())
@@ -117,9 +111,9 @@ public class MemberServiceImpl implements MemberService{
                         .email(m.getEmail())
                         .birthday(m.getBirthday())
                         .phoneNumber(m.getPhoneNumber())
-                        .gender(m.getGender())
-                        .status(m.getStatus())
-                        .level(m.getLevel())
+                        .gender(String.valueOf(m.getGender()))
+                        .status(String.valueOf(m.getStatus()))
+                        .level(String.valueOf(m.getLevel()))
                         .region(m.getRegion())
                         .createAt(m.getCreateAt())
                         .build()

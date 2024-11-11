@@ -17,6 +17,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class WithdrawMember {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long withdrawMemberId;
+
     @OneToOne
     @JoinColumn(name = "member_id")
     private Member member;
