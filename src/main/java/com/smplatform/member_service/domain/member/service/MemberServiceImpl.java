@@ -3,17 +3,20 @@ package com.smplatform.member_service.domain.member.service;
 import com.smplatform.member_service.domain.member.entity.Member;
 import com.smplatform.member_service.domain.member.dto.MemberCreateDto;
 import com.smplatform.member_service.domain.member.dto.MemberUpdateDto;
+import com.smplatform.member_service.domain.member.entity.WithdrawMember;
 import com.smplatform.member_service.domain.member.enums.MemberAuthority;
 import com.smplatform.member_service.domain.member.enums.MemberLevel;
 import com.smplatform.member_service.domain.member.enums.MemberStatus;
 import com.smplatform.member_service.domain.member.dto.MemberResponseDto;
 import com.smplatform.member_service.domain.member.dto.MemberSearchRequestParamDto;
 import com.smplatform.member_service.domain.member.repository.MemberRepository;
+import com.smplatform.member_service.domain.member.repository.WithdrawMemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,7 @@ import java.util.stream.Collectors;
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
+    private final WithdrawMemberRepository withdrawMemberRepository;
 
     @Override
     @Transactional(readOnly = false)
@@ -49,6 +53,8 @@ public class MemberServiceImpl implements MemberService{
                 .status(MemberStatus.ACTIVE)
                 .authority(MemberAuthority.USER)
                 .level(MemberLevel.NEW)
+                .createAt(LocalDateTime.now())
+                .updateAt(LocalDateTime.now())
                 .build();
 
         return memberRepository.save(newMember).getMemberId();
@@ -134,12 +140,21 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     @Transactional(readOnly = false)
-    public Void deleteMember(Long id) {
+    public Void deleteMember(Long id, String memo) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found"));
 
         member.delete();
         memberRepository.save(member);
+
+        WithdrawMember withdrawMember = WithdrawMember.builder()
+                .member(member)
+                .email(member.getEmail())
+                .memo(memo)
+                .withdrawAt(LocalDateTime.now())
+                .build();
+
+        withdrawMemberRepository.save(withdrawMember);
 
         return null;
     }

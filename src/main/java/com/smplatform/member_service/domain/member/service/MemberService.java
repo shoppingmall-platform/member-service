@@ -29,5 +29,5 @@ public interface MemberService {
     /**
      * Delete
      */
-    Void deleteMember(Long id);
+    Void deleteMember(Long id, String memo);
 }

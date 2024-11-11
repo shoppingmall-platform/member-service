@@ -17,9 +17,9 @@ public class MemberUpdateDto {
     private String name;
     private LocalDate birthday;
     private String phoneNumber;
-    private Gender gender;
-    private MemberStatus status;
-    private MemberLevel level;
+    private String gender;
+    private String status;
+    private String level;
     private String region;
     private Boolean tosAgreement;
     private Boolean privacyAgreement;

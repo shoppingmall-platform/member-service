@@ -1,5 +1,6 @@
 package com.smplatform.member_service.domain.member.dto;
 
+import com.smplatform.member_service.domain.member.enums.MemberAuthority;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,9 +21,10 @@ public class MemberResponseDto {
     private String email;
     private LocalDate birthday;
     private String phoneNumber;
-    private Gender gender;
-    private MemberStatus status;
-    private MemberLevel level;
+    private String gender;
+    private String status;
+    private String level;
     private String region;
     private LocalDateTime createAt;
+    private String authority;
 }
