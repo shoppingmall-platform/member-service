@@ -7,10 +7,15 @@ import com.smplatform.member_service.domain.member.enums.MemberLevel;
 import com.smplatform.member_service.domain.member.enums.MemberStatus;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,35 +33,48 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column(name = "name")
+    @NotBlank
+    @Column(name = "id", nullable = false)
+    private String id;
+
+    @NotBlank
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @NotBlank
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "email")
+    @NotBlank
+    @Email
+    @Column(name = "email", nullable = false)
     private String email;
-
-    @Column(name = "password")
-    private String password;
 
     @Column(name = "birthday")
     private LocalDate birthday;
 
-    @Column(name = "phone_number")
+    @NotBlank
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
-    @Column(name = "gender")
+    @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
     private Gender gender;
 
-    @Column(name = "status")
+    @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private MemberStatus status;
 
-    @Column(name = "authority")
+    @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "authority", nullable = false)
     private MemberAuthority authority;
 
-    @Column(name = "level")
+    @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "level", nullable = false)
     private MemberLevel level;
 
     @Column(name = "region")
@@ -71,27 +89,26 @@ public class Member {
     @Column(name = "marketing_agreement")
     private Boolean marketingAgreement;
 
+    @CreationTimestamp
     @Column(name = "create_at")
     private LocalDateTime createAt;
 
+    @UpdateTimestamp
     @Column(name = "update_at")
     private LocalDateTime updateAt;
 
 
-    public Member update(MemberUpdateDto memberUpdateDto) {
+    public void update(MemberUpdateDto memberUpdateDto) {
         Optional.ofNullable(memberUpdateDto.getName()).ifPresent(name -> this.name = name);
         Optional.ofNullable(memberUpdateDto.getBirthday()).ifPresent(birthday -> this.birthday = birthday);
         Optional.ofNullable(memberUpdateDto.getPhoneNumber()).ifPresent(phoneNumber -> this.phoneNumber = phoneNumber);
-        Optional.ofNullable(memberUpdateDto.getGender()).ifPresent(gender -> this.gender = Gender.valueOf(gender));
-        Optional.ofNullable(memberUpdateDto.getStatus()).ifPresent(status -> this.status = MemberStatus.valueOf(status));
-        Optional.ofNullable(memberUpdateDto.getLevel()).ifPresent(level -> this.level = MemberLevel.valueOf(level));
+        Optional.ofNullable(memberUpdateDto.getGender()).ifPresent(gender -> this.gender = gender);
+        Optional.ofNullable(memberUpdateDto.getStatus()).ifPresent(status -> this.status = status);
+        Optional.ofNullable(memberUpdateDto.getLevel()).ifPresent(level -> this.level = level);
         Optional.ofNullable(memberUpdateDto.getRegion()).ifPresent(region -> this.region = region);
         Optional.ofNullable(memberUpdateDto.getTosAgreement()).ifPresent(tosAgreement -> this.tosAgreement = tosAgreement);
         Optional.ofNullable(memberUpdateDto.getPrivacyAgreement()).ifPresent(privacyAgreement -> this.privacyAgreement = privacyAgreement);
         Optional.ofNullable(memberUpdateDto.getMarketingAgreement()).ifPresent(marketingAgreement -> this.marketingAgreement = marketingAgreement);
-        this.updateAt = LocalDateTime.now();
-
-        return this;
     }
 
     public void delete() {

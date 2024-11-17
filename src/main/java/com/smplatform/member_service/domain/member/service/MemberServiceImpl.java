@@ -4,10 +4,6 @@ import com.smplatform.member_service.domain.member.entity.Member;
 import com.smplatform.member_service.domain.member.dto.MemberCreateDto;
 import com.smplatform.member_service.domain.member.dto.MemberUpdateDto;
 import com.smplatform.member_service.domain.member.entity.WithdrawMember;
-import com.smplatform.member_service.domain.member.enums.Gender;
-import com.smplatform.member_service.domain.member.enums.MemberAuthority;
-import com.smplatform.member_service.domain.member.enums.MemberLevel;
-import com.smplatform.member_service.domain.member.enums.MemberStatus;
 import com.smplatform.member_service.domain.member.dto.MemberResponseDto;
 import com.smplatform.member_service.domain.member.dto.MemberSearchRequestParamDto;
 import com.smplatform.member_service.domain.member.repository.MemberRepository;
@@ -18,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,23 +38,7 @@ public class MemberServiceImpl implements MemberService{
         String hashedPassword = passwordEncoder.encode(memberCreateDto.getPassword());
 
         // 저장할 멤버 엔티티 생성
-        Member newMember = Member.builder()
-                .name(memberCreateDto.getName())
-                .email(memberCreateDto.getEmail())
-                .password(hashedPassword)
-                .birthday(memberCreateDto.getBirthday())
-                .phoneNumber(memberCreateDto.getPhoneNumber())
-                .gender(Gender.valueOf(memberCreateDto.getGender()))
-                .region(memberCreateDto.getRegion())
-                .tosAgreement(memberCreateDto.getTosAgreement())
-                .privacyAgreement(memberCreateDto.getPrivacyAgreement())
-                .marketingAgreement(memberCreateDto.getMarketingAgreement())
-                .status(MemberStatus.ACTIVE)
-                .authority(MemberAuthority.USER)
-                .level(MemberLevel.NEW)
-                .createAt(LocalDateTime.now())
-                .updateAt(LocalDateTime.now())
-                .build();
+        Member newMember = memberCreateDto.toEntity(hashedPassword);
 
         return memberRepository.save(newMember).getMemberId();
     }
@@ -70,18 +49,7 @@ public class MemberServiceImpl implements MemberService{
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found"));
 
-        return MemberResponseDto.builder()
-                .memberId(member.getMemberId())
-                .name(member.getName())
-                .email(member.getEmail())
-                .birthday(member.getBirthday())
-                .phoneNumber(member.getPhoneNumber())
-                .gender(String.valueOf(member.getGender()))
-                .status(String.valueOf(member.getStatus()))
-                .level(String.valueOf(member.getLevel()))
-                .region(member.getRegion())
-                .createAt(member.getCreateAt())
-                .build();
+        return new MemberResponseDto(member);
     }
 
     @Override
@@ -89,7 +57,9 @@ public class MemberServiceImpl implements MemberService{
     public List<MemberResponseDto> getMembers() {
         List<Member> members = memberRepository.findAll();
 
-        return getMemberResponseDtos(members);
+        return members.stream()
+                .map(MemberResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -100,24 +70,8 @@ public class MemberServiceImpl implements MemberService{
 
         List<Member> members = memberRepository.searchMember(searchRequestParamDto);
 
-        return getMemberResponseDtos(members);
-    }
-
-    private List<MemberResponseDto> getMemberResponseDtos(List<Member> members) {
         return members.stream()
-                .map(m -> MemberResponseDto.builder()
-                        .memberId(m.getMemberId())
-                        .name(m.getName())
-                        .email(m.getEmail())
-                        .birthday(m.getBirthday())
-                        .phoneNumber(m.getPhoneNumber())
-                        .gender(String.valueOf(m.getGender()))
-                        .status(String.valueOf(m.getStatus()))
-                        .level(String.valueOf(m.getLevel()))
-                        .region(m.getRegion())
-                        .createAt(m.getCreateAt())
-                        .build()
-                )
+                .map(MemberResponseDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -141,13 +95,7 @@ public class MemberServiceImpl implements MemberService{
         member.delete();
         memberRepository.save(member);
 
-        WithdrawMember withdrawMember = WithdrawMember.builder()
-                .member(member)
-                .email(member.getEmail())
-                .memo(memo)
-                .withdrawAt(LocalDateTime.now())
-                .build();
-
+        WithdrawMember withdrawMember = new WithdrawMember(member, memo);
         withdrawMemberRepository.save(withdrawMember);
 
         return null;

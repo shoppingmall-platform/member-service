@@ -58,7 +58,10 @@ public class MemberController {
 
     @DeleteMapping("/{memberId}")
     @Operation(summary = "member 삭제", description = "사용자 정보 삭제")
-    public ResponseEntity<Void> deleteMember(@PathVariable("memberId") Long memberId, @RequestBody String memo) {
+    public ResponseEntity<Void> deleteMember(
+            @PathVariable("memberId") Long memberId,
+            @RequestBody String memo
+    ) {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.deleteMember(memberId, memo));
     }
 }

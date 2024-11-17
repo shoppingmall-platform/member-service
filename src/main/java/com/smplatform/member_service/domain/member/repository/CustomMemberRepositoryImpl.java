@@ -27,10 +27,10 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
                 .where(
                     nameContains(searchRequestParamDto.getName()),
                     emailContains(searchRequestParamDto.getEmail()),
-                    levelEq(MemberLevel.valueOf(searchRequestParamDto.getLevel())),
-                    dateSearchBetween(DateSerach.valueOf(searchRequestParamDto.getDateSearch()), searchRequestParamDto.getStartDate(), searchRequestParamDto.getEndDate()),
+                    levelEq(searchRequestParamDto.getLevel()),
+                    dateSearchBetween(searchRequestParamDto.getDateSearch(), searchRequestParamDto.getStartDate(), searchRequestParamDto.getEndDate()),
                     ageBetween(searchRequestParamDto.getStartAge(), searchRequestParamDto.getEndAge()),
-                    genderEq(Gender.valueOf(searchRequestParamDto.getGender()))
+                    genderEq(searchRequestParamDto.getGender())
                 )
                 .fetch();
     }
