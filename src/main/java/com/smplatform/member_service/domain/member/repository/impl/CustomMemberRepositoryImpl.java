@@ -1,4 +1,4 @@
-package com.smplatform.member_service.domain.member.repository;
+package com.smplatform.member_service.domain.member.repository.impl;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -8,6 +8,7 @@ import com.smplatform.member_service.domain.member.enums.Gender;
 import com.smplatform.member_service.domain.member.enums.MemberLevel;
 import com.smplatform.member_service.domain.member.enums.search.DateSerach;
 
+import com.smplatform.member_service.domain.member.repository.CustomMemberRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

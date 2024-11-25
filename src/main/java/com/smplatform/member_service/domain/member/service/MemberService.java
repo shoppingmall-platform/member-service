@@ -17,17 +17,17 @@ public interface MemberService {
     /**
      * Read
      */
-    MemberResponseDto getMember(Long id);
+    MemberResponseDto getMember(Long memberId);
     List<MemberResponseDto> getMembers();
     List<MemberResponseDto> searchMembers(MemberSearchRequestParamDto searchRequestParamDto);
 
     /**
      * Update
      */
-    Long updateMember(Long id, MemberUpdateDto updateMemberDto);
+    Long updateMember(Long memberId, MemberUpdateDto updateMemberDto);
 
     /**
      * Delete
      */
-    Void deleteMember(Long id, String memo);
+    Void deleteMember(Long memberId, String memo);
 }

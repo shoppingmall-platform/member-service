@@ -18,14 +18,15 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 public class MemberCreateDto {
-    @NotBlank
-    private String name;
 
     @NotBlank
     private String id;
 
     @NotBlank
     private String password;
+
+    @NotBlank
+    private String name;
 
     @NotBlank
     @Email

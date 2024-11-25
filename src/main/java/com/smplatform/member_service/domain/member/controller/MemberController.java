@@ -7,6 +7,7 @@ import com.smplatform.member_service.domain.member.dto.MemberSearchRequestParamD
 import com.smplatform.member_service.domain.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class MemberController {
 
     @PostMapping
     @Operation(summary = "member 생성", description = "사용자 정보 생성")
-    public ResponseEntity<Long> createMember(@RequestBody MemberCreateDto newMember) {
+    public ResponseEntity<Long> createMember(@RequestBody @Valid final MemberCreateDto newMember) {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.createMember(newMember));
     }
 
@@ -43,7 +44,7 @@ public class MemberController {
 
     @PostMapping("/search")
     @Operation(summary = "member 검색", description = "검색파라미터를 이용한 사용자 정보 리스트 조회")
-    public ResponseEntity<List<MemberResponseDto>> searchMembers(@RequestBody MemberSearchRequestParamDto searchParam) {
+    public ResponseEntity<List<MemberResponseDto>> searchMembers(@RequestBody @Valid final MemberSearchRequestParamDto searchParam) {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.searchMembers(searchParam));
     }
 
@@ -51,7 +52,7 @@ public class MemberController {
     @Operation(summary = "member 정보 수정", description = "사용자 정보 수정")
     public ResponseEntity<Long> updateMember(
             @PathVariable("memberId") Long memberId,
-            @RequestBody MemberUpdateDto updateMember
+            @RequestBody @Valid final MemberUpdateDto updateMember
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.updateMember(memberId, updateMember));
     }
