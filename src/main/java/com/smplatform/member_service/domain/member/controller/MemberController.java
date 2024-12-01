@@ -1,9 +1,6 @@
 package com.smplatform.member_service.domain.member.controller;
 
-import com.smplatform.member_service.domain.member.dto.MemberCreateDto;
-import com.smplatform.member_service.domain.member.dto.MemberUpdateDto;
-import com.smplatform.member_service.domain.member.dto.MemberResponseDto;
-import com.smplatform.member_service.domain.member.dto.MemberSearchRequestParamDto;
+import com.smplatform.member_service.domain.member.dto.*;
 import com.smplatform.member_service.domain.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -64,5 +61,11 @@ public class MemberController {
             @RequestBody String memo
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.deleteMember(id, memo));
+    }
+
+    @GetMapping("/credential/{id}")
+    @Operation(summary = "member 로그인 정보 조회", description = "사용자 로그인 정보 조회")
+    public ResponseEntity<MemberCredentialDto> getMemberCredential(@PathVariable("id") String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.getMemberCredential(id));
     }
 }

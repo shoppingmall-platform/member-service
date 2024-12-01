@@ -1,9 +1,6 @@
 package com.smplatform.member_service.domain.member.service;
 
-import com.smplatform.member_service.domain.member.dto.MemberCreateDto;
-import com.smplatform.member_service.domain.member.dto.MemberUpdateDto;
-import com.smplatform.member_service.domain.member.dto.MemberResponseDto;
-import com.smplatform.member_service.domain.member.dto.MemberSearchRequestParamDto;
+import com.smplatform.member_service.domain.member.dto.*;
 
 import java.util.List;
 
@@ -30,4 +27,9 @@ public interface MemberService {
      * Delete
      */
     Void deleteMember(String id, String memo);
+
+    /**
+     * Actions
+     */
+    MemberCredentialDto getMemberCredential(String id);
 }

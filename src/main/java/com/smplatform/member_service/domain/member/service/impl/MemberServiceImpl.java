@@ -1,11 +1,8 @@
 package com.smplatform.member_service.domain.member.service.impl;
 
+import com.smplatform.member_service.domain.member.dto.*;
 import com.smplatform.member_service.domain.member.entity.Member;
-import com.smplatform.member_service.domain.member.dto.MemberCreateDto;
-import com.smplatform.member_service.domain.member.dto.MemberUpdateDto;
 import com.smplatform.member_service.domain.member.entity.WithdrawMember;
-import com.smplatform.member_service.domain.member.dto.MemberResponseDto;
-import com.smplatform.member_service.domain.member.dto.MemberSearchRequestParamDto;
 import com.smplatform.member_service.domain.member.exception.IdDuplicateException;
 import com.smplatform.member_service.domain.member.exception.MemberNotFoundException;
 import com.smplatform.member_service.domain.member.repository.MemberRepository;
@@ -102,5 +99,14 @@ public class MemberServiceImpl implements MemberService {
         withdrawMemberRepository.save(withdrawMember);
 
         return null;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MemberCredentialDto getMemberCredential(String id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new MemberNotFoundException(id));
+
+        return new MemberCredentialDto(member);
     }
 }
