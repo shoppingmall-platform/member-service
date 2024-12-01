@@ -31,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(readOnly = false)
-    public Long createMember(MemberCreateDto memberCreateDto) {
+    public String createMember(MemberCreateDto memberCreateDto) {
         // 아이디 중복 검사
         if (memberRepository.findById(memberCreateDto.getId()).isPresent()) {
             throw new IdDuplicateException(memberCreateDto.getId());
@@ -43,14 +43,14 @@ public class MemberServiceImpl implements MemberService {
         // 저장할 멤버 엔티티 생성
         Member newMember = memberCreateDto.toEntity(hashedPassword);
 
-        return memberRepository.save(newMember).getMemberId();
+        return memberRepository.save(newMember).getId();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public MemberResponseDto getMember(Long memberId) {
-        Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(memberId));
+    public MemberResponseDto getMember(String id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new MemberNotFoundException(id));
 
         return new MemberResponseDto(member);
     }
@@ -80,20 +80,20 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(readOnly = false)
-    public Long updateMember(Long memberId, MemberUpdateDto memberUpdateDto) {
+    public String updateMember(String id, MemberUpdateDto memberUpdateDto) {
 
-        Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(memberId));
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new MemberNotFoundException(id));
         member.update(memberUpdateDto);
 
-        return memberRepository.save(member).getMemberId();
+        return memberRepository.save(member).getId();
     }
 
     @Override
     @Transactional(readOnly = false)
-    public Void deleteMember(Long memberId, String memo) {
-        Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(memberId));
+    public Void deleteMember(String id, String memo) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new MemberNotFoundException(id));
 
         member.delete();
         memberRepository.save(member);

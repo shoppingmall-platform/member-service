@@ -29,10 +29,6 @@ import java.util.Optional;
 @NoArgsConstructor
 public class Member {
     @Id
-    @Column(name = "member_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
-
     @NotBlank
     @Column(name = "id", nullable = false)
     private String id;

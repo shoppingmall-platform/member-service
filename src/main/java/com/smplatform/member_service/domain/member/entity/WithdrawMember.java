@@ -2,7 +2,6 @@ package com.smplatform.member_service.domain.member.entity;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,18 +18,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "withdraw_members")
 public class WithdrawMember {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long withdrawMemberId;
 
+    @Id
     @NotNull
     @OneToOne
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @NotBlank
-    @Column(name = "id")
-    private String id;
 
     @Column(name = "memo")
     private String memo;
@@ -41,8 +34,6 @@ public class WithdrawMember {
 
     public WithdrawMember(Member member, String memo) {
         this.member = member;
-        this.id = member.getId();
         this.memo = memo;
     }
-
 }

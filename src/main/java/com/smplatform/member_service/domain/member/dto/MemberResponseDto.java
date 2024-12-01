@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 @Getter
 public class MemberResponseDto {
-    private final Long memberId;
     private final String id;
     private final String name;
     private final String email;
@@ -22,7 +21,6 @@ public class MemberResponseDto {
     private final String authority;
 
     public MemberResponseDto(Member member) {
-        this.memberId = member.getMemberId();
         this.id = member.getId();
         this.name = member.getName();
         this.email = member.getEmail();

@@ -12,22 +12,22 @@ public interface MemberService {
     /**
      * Create
      */
-    Long createMember(MemberCreateDto newMemberDto);
+    String createMember(MemberCreateDto newMemberDto);
 
     /**
      * Read
      */
-    MemberResponseDto getMember(Long memberId);
+    MemberResponseDto getMember(String id);
     List<MemberResponseDto> getMembers();
     List<MemberResponseDto> searchMembers(MemberSearchRequestParamDto searchRequestParamDto);
 
     /**
      * Update
      */
-    Long updateMember(Long memberId, MemberUpdateDto updateMemberDto);
+    String updateMember(String id, MemberUpdateDto updateMemberDto);
 
     /**
      * Delete
      */
-    Void deleteMember(Long memberId, String memo);
+    Void deleteMember(String id, String memo);
 }

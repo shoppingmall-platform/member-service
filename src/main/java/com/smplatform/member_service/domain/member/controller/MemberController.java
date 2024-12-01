@@ -26,14 +26,14 @@ public class MemberController {
 
     @PostMapping
     @Operation(summary = "member 생성", description = "사용자 정보 생성")
-    public ResponseEntity<Long> createMember(@RequestBody @Valid final MemberCreateDto newMember) {
+    public ResponseEntity<String> createMember(@RequestBody @Valid final MemberCreateDto newMember) {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.createMember(newMember));
     }
 
-    @GetMapping("/{memberId}")
+    @GetMapping("/{id}")
     @Operation(summary = "member 조회", description = "해당 아이디의 사용자 정보 조회")
-    public ResponseEntity<MemberResponseDto> getMember(@PathVariable("memberId") Long memberId) {
-        return ResponseEntity.status(HttpStatus.OK).body(memberService.getMember(memberId));
+    public ResponseEntity<MemberResponseDto> getMember(@PathVariable("id") String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.getMember(id));
     }
 
     @GetMapping
@@ -48,21 +48,21 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.searchMembers(searchParam));
     }
 
-    @PutMapping("/{memberId}")
+    @PutMapping("/{id}")
     @Operation(summary = "member 정보 수정", description = "사용자 정보 수정")
-    public ResponseEntity<Long> updateMember(
-            @PathVariable("memberId") Long memberId,
+    public ResponseEntity<String> updateMember(
+            @PathVariable("id") String id,
             @RequestBody @Valid final MemberUpdateDto updateMember
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(memberService.updateMember(memberId, updateMember));
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.updateMember(id, updateMember));
     }
 
-    @DeleteMapping("/{memberId}")
+    @DeleteMapping("/{id}")
     @Operation(summary = "member 삭제", description = "사용자 정보 삭제")
     public ResponseEntity<Void> deleteMember(
-            @PathVariable("memberId") Long memberId,
+            @PathVariable("id") String id,
             @RequestBody String memo
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(memberService.deleteMember(memberId, memo));
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.deleteMember(id, memo));
     }
 }
