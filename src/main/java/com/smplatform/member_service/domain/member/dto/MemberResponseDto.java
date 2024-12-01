@@ -1,24 +1,36 @@
 package com.smplatform.member_service.domain.member.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.smplatform.member_service.domain.member.entity.Member;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
-@AllArgsConstructor
 public class MemberResponseDto {
-    private Long memberId;
-    private String name;
-    private String email;
-    private LocalDate birthday;
-    private String phoneNumber;
-    private String gender;
-    private String status;
-    private String level;
-    private String region;
-    private LocalDateTime createAt;
+    private final String id;
+    private final String name;
+    private final String email;
+    private final LocalDate birthday;
+    private final String phoneNumber;
+    private final String gender;
+    private final String status;
+    private final String level;
+    private final String region;
+    private final LocalDateTime createAt;
+    private final String authority;
+
+    public MemberResponseDto(Member member) {
+        this.id = member.getId();
+        this.name = member.getName();
+        this.email = member.getEmail();
+        this.birthday = member.getBirthday();
+        this.phoneNumber = member.getPhoneNumber();
+        this.gender = member.getGender().toString();
+        this.status = member.getStatus().toString();
+        this.level = member.getLevel().toString();
+        this.region = member.getRegion();
+        this.createAt = member.getCreateAt();
+        this.authority = member.getAuthority().toString();
+    }
 }
